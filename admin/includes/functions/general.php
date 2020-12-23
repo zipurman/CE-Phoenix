@@ -760,6 +760,45 @@ EOSQL
     set_time_limit($limit);
   }
 
+
+    ////
+    // Alias function for Store configuration values in the Administration Tool for array of dropdown values
+    function tep_cfg_select_pull_down($select_options, $key_value, $key = '') {
+
+        $name = ((tep_not_null($key)) ? 'configuration[' . $key . ']' : 'configuration_value');
+        $select_string = '<select name="' . $name . '">';
+        foreach ($select_options as $select_option) {
+            $select_string .= '<option value="' . $select_option . '"';
+            if ($key_value == $select_option) $select_string .= ' SELECTED';
+            $select_string .= '>' . $select_option . '</option>';
+        }
+        $select_string .= '</select>';
+        return $select_string;
+    }
+
+
+    ////
+    // Alias function for Store configuration values in the Administration Tool with added color picker (Requires hook bootStrapColorPicker)
+    function tep_cfg_color_picker( $key_value, $key = '') {
+
+        $name = ((tep_not_null($key)) ? 'configuration[' . $key . ']' : 'configuration_value');
+        $color_picker = '<div id="cp-component-' . $key . '" class="input-group">';
+        $color_picker .= '<input name="' . $name . '" value="' . $key_value . '" type="text" class="form-control">';
+        $color_picker .= '<span class="input-group-append">';
+        $color_picker .= '<span class="input-group-text colorpicker-input-addon"><i></i></span>';
+        $color_picker .= '</span>';
+        $color_picker .= '</div>';
+
+        $color_picker .= <<<script
+<script>
+  $(function () {
+    $('#cp-component-{$key}').colorpicker();
+  });
+</script>
+script;
+        return $color_picker;
+    }
+
 ////
 // Alias function for Store configuration values in the Administration Tool
   function tep_cfg_select_option($select_options, $key_value, $key = '') {
